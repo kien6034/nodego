@@ -48,12 +48,12 @@ func (app *App) MakeTask(handler interface{}, callback interface{}, err interfac
 	return app.tasks.makeTask(handler, callback, err)
 }
 
-func (app *App) initModules(events chan IEvent) {
+func (app *App) initModules(events chan IEvent, numTaskThread int) {
 	app.timer = makeTimerModule(events)
 	app.api = makeAPICallModule(events)
 	app.http = makeHTTPServerModule(events)
 	app.ws = makeWebsocketModule(events)
-	app.tasks = makeTaskModule(events)
+	app.tasks = makeTaskModule(events, numTaskThread)
 }
 
 func (app *App) startModules() {
@@ -99,21 +99,21 @@ func MakeTask(handler interface{}, callback interface{}, err interface{}) *Custo
 	return app.tasks.makeTask(handler, callback, err)
 }
 
-func NewApp() *App {
+func NewApp(numTaskThread int) *App {
 	if app == nil {
 		events := make(chan IEvent, 1<<16)
 		app = &App{events: events}
-		app.initModules(events)
+		app.initModules(events, numTaskThread)
 		return app
 	}
 	return nil
 }
 
-func InitApp() {
+func InitApp(numTaskThread int) {
 	if app == nil {
 		events := make(chan IEvent, 1<<16)
 		app = &App{events: events}
-		app.initModules(events)
+		app.initModules(events, numTaskThread)
 	}
 }
 
