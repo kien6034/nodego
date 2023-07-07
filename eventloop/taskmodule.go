@@ -103,6 +103,6 @@ func (taskModule *TaskModule) exec() {
 	taskModule.makeWorkerThread()
 }
 
-func makeTaskModule(events chan IEvent) *TaskModule {
-	return &TaskModule{BaseModule: BaseModule{events}, numThread: TASK_NUM_THREAD, taskChannel: make(chan *CustomizedTask, TASK_NUM_THREAD)}
+func makeTaskModule(events chan IEvent, numTaskThread int) *TaskModule {
+	return &TaskModule{BaseModule: BaseModule{events}, numThread: numTaskThread, taskChannel: make(chan *CustomizedTask, numTaskThread)}
 }

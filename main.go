@@ -24,7 +24,7 @@ func sum(arr ...int) (int, error) {
 
 func main() {
 	fmt.Println(" Init ")
-	ev.InitApp()
+	ev.InitApp(128)
 
 	ev.MakeAPIHandler("/test", func(hw *ev.HTTPResponseWriter, r *http.Request) {
 		// Wait 2 seconds before response data to client
