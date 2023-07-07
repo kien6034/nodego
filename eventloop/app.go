@@ -99,9 +99,9 @@ func MakeTask(handler interface{}, callback interface{}, err interface{}) *Custo
 	return app.tasks.makeTask(handler, callback, err)
 }
 
-func NewApp(numTaskThread int) *App {
+func NewApp(numAppThread int, numTaskThread int) *App {
 	if app == nil {
-		events := make(chan IEvent, 1<<16)
+		events := make(chan IEvent, numAppThread)
 		app = &App{events: events}
 		app.initModules(events, numTaskThread)
 		return app
@@ -109,9 +109,9 @@ func NewApp(numTaskThread int) *App {
 	return nil
 }
 
-func InitApp(numTaskThread int) {
+func InitApp(numAppThread int, numTaskThread int) {
 	if app == nil {
-		events := make(chan IEvent, 1<<16)
+		events := make(chan IEvent, numAppThread)
 		app = &App{events: events}
 		app.initModules(events, numTaskThread)
 	}
