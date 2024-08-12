@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"runtime"
 )
 
 type TaskProcessThread struct {
@@ -40,7 +41,8 @@ func (task *CustomizedTask) handlerExec() (interface{}, interface{}) {
 	// add this for debugging
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Printf("NODEGO: Handler execution failed: %v\n", r)
+			handlerName := runtime.FuncForPC(reflect.ValueOf(task.handler).Pointer()).Name()
+			fmt.Printf("NODEGO: Handler execution for %s failed: %v\n", handlerName, r)
 
 			panic(r)
 		}
