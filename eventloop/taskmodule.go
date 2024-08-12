@@ -2,7 +2,9 @@ package eventloop
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
+	"runtime"
 )
 
 type TaskProcessThread struct {
@@ -35,6 +37,9 @@ func (task *CustomizedTask) handlerExec() (interface{}, interface{}) {
 	for i, value := range task.data {
 		params[i] = reflect.ValueOf(value)
 	}
+
+	handlerName := runtime.FuncForPC(reflect.ValueOf(task.handler).Pointer()).Name()
+	fmt.Printf("Handler name: %s\n", handlerName)
 	value := reflect.ValueOf(task.handler).Call(params)
 	return value[0].Interface(), value[1].Interface()
 }
